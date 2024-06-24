@@ -22,11 +22,25 @@ let inputArray = []; // format: [num1, operator, num2]
 
 function updateInputArray (){
   let num = 0; // to store the user entered number
+  let decimalPlaceCounter = 0; // to know if '.' button has been clicked, and to store the decimal place count
   let isThisNum; // to know whether last clicked button is a digit or an operator
-  
+
+  let dot = document.querySelector(`#dot`);
+  dot.addEventListener('click',() => {
+    if (!decimalPlaceCounter){
+      display.textContent = `${num}.`;
+      decimalPlaceCounter++;
+    }
+  });
+
   // to update number and display it on clicking the digit buttons
   function onClickingDigit (digit) {
-    num = num*10 + digit;
+    if (decimalPlaceCounter){
+      num = num + digit/(10**decimalPlaceCounter);
+      decimalPlaceCounter++;
+    } else {
+      num = num*10 + digit
+    }
     display.textContent = `${num}`;
     isThisNum = true;
   }
@@ -46,19 +60,20 @@ function updateInputArray (){
       }
       inputArray.push(operator)
       num = 0;
+      decimalPlaceCounter = 0;
     }
-    isThisNum = false
+    isThisNum = false;
   }
-
 
   let clear = document.querySelector('#clear');
   clear.addEventListener('click', ()=> {
     inputArray = [];
     num = 0;
+    decimalPlaceCounter = 0;
     display.textContent = num;
   })
-
   
+  // Adding event listeners for digit buttons
   let one = document.querySelector('#one');
   one.addEventListener('click', () => {onClickingDigit(1)})
 
@@ -89,7 +104,7 @@ function updateInputArray (){
   let zero = document.querySelector('#zero');
   zero.addEventListener('click', () => {onClickingDigit(0)})
   
-  
+  // Adding event listeners for operator buttons
   let addition= document.querySelector('#addition');
   addition.addEventListener('click', () => {onClickingOperator('+')})
 
