@@ -1,84 +1,53 @@
-function add (num1, num2){
-  return num1 + num2;
-}
-
-function subtract (num1, num2) {
-  return num1 - num2;
-}
-
-function multiply (num1, num2){
-  return num1 * num2;
-}
-
-function divide (num1, num2)  {
-  return num1/ num2;
-}
-
-let display = document.getElementById('display');
-
-
+// operates on two numbers as per the operator passed
 function operate (num1, operator, num2){
   switch (operator){
     case '+':
-      return add(num1, num2);
+      return num1+num2;
     case '-' :
-      return subtract (num1, num2);
+      return num1-num2;
     case '*' :
-      return multiply(num1, num2);
+      return num1*num2;
     case '/' :
-      return divide(num1, num2);
+      return num1/num2;
     default :
-      console.log('you have messed up');
       break ;
   }
 }
 
+// Calculator display
+let display = document.getElementById('display');
+// array to store the two numbers & operator (expression to calculate) entered by the user 
+let inputArray = []; // format: [num1, operator, num2]
 
-let inputArray = [];
 
 function updateInputArray (){
-  let num = 0;
-  let isThisNum; // to check whether latest clicked is digit or operator
+  let num = 0; // to store the user entered number
+  let isThisNum; // to know whether last clicked button is a digit or an operator
   
+  // to update number and display it on clicking the digit buttons
   function onClickingDigit (digit) {
     num = num*10 + digit;
     display.textContent = `${num}`;
     isThisNum = true;
   }
   
+  // to update expression on clicking the operator buttons
   function onClickingOperator (operator) {
-    switch (inputArray.length){
-      case 0:
+    if (!isThisNum){ //if last clicked button was also an operator, change it in input array with new operator
+      inputArray[1]= operator;
+    } else {
+      inputArray.push(num);
+      if (inputArray.length == 3){ //calculate the previous expression first
+        num = operate(...inputArray);
+        num = Math.round(num*100000000)/100000000;
+        display.textContent = (isNaN(num)) ? `Zero division error. E cholbe na!` : `${num}`;
+        inputArray = [];
         inputArray.push(num);
-        // moves to case 1
-        inputArray.push(operator)
-        num = 0;
-        break;
-      case 2:
-        if (isThisNum) {
-          inputArray.push(num);
-          num = operate(...inputArray);
-          if (isNaN(num)){
-            display.textContent = `Zero division error. E cholbe na!`
-          } else {
-            num = Math.round(num*100000000)/100000000;
-            display.textContent = `${num}`
-          }
-          inputArray = [];
-          inputArray.push(num);
-          // moves to case 1
-          inputArray.push(operator)
-          num = 0;
-          break;
-        } else {
-          inputArray[1]= operator;
-          break;
-        }
-      default:
-        console.log('You have messed up');
+      }
+      inputArray.push(operator)
+      num = 0;
     }
     isThisNum = false
-    console.log("operator");
   }
 
 
