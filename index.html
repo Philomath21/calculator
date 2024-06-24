@@ -10,33 +10,39 @@
 
 <body>
   <div id="box">
-    <p id="display">0</p>
-
-    <button type="submit" id="clear">clear</button>
+    <div class="row" id="rd">
+      <p id="display">0</p>
+    </div>
+    <div class="row" id="r1">
+      <button type="submit" id="clear">clear</button>
+      <button type="submit" id="back">back</button>
+    </div>
     <div class="row">
       <button type="submit" id="seven">7</button>
       <button type="submit" id="eight">8</button>
       <button type="submit" id="nine">9</button>
-      <button type="submit" id="division">/</button>
+      <button type="submit" class="operator" id="division">/</button>
     </div>
     <div class="row">
       <button type="submit" id="four">4</button>
       <button type="submit" id="five">5</button>
       <button type="submit" id="six">6</button>
-      <button type="submit" id="multiplication">*</button>
+      <button type="submit" class="operator" id="multiplication">*</button>
     </div>
     <div class="row">
       <button type="submit" id="one">1</button>
       <button type="submit" id="two">2</button>
       <button type="submit" id="three">3</button>
-      <button type="submit" id="subtraction">-</button>
+      <button type="submit" class="operator" id="subtraction">-</button>
     </div>
-    <div class="row">
+    <div class="row" id="r5">
       <button type="submit" id="zero">0</button>
       <button type="submit" id="dot">.</button>
-      <button type="submit" id="addition">+</button>
+      <button type="submit" class="operator" id="addition">+</button>
     </div>
-    <button type="submit" id="evaluate">=</button>
+    <div class="row" id="r6">
+      <button type="submit" class="operator" id="evaluate">=</button>
+    </div>
   
     
   </div>

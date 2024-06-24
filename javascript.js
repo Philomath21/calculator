@@ -54,7 +54,7 @@ function updateInputArray (){
       if (inputArray.length == 3){ //calculate the previous expression first
         num = operate(...inputArray);
         num = Math.round(num*100000000)/100000000;
-        display.textContent = (isNaN(num)) ? `Zero division error. E cholbe na!` : `${num}`;
+        display.textContent = (isNaN(num)|| !isFinite(num)) ? `Zero division error` : `${num}`;
         inputArray = [];
         inputArray.push(num);
       }
@@ -63,7 +63,7 @@ function updateInputArray (){
       decimalPlaceCounter = 0;
     }
     isThisNum = false;
-  }
+  };
 
   let clear = document.querySelector('#clear');
   clear.addEventListener('click', ()=> {
@@ -71,6 +71,18 @@ function updateInputArray (){
     num = 0;
     decimalPlaceCounter = 0;
     display.textContent = num;
+  });
+
+  let back = document.querySelector('#back');
+  back.addEventListener('click', () => {
+    if (decimalPlaceCounter){
+      decimalPlaceCounter--;
+      num = num - digit/(10**decimalPlaceCounter);
+    } else {
+      num = num*10 + digit
+    }
+    display.textContent = `${num}`;
+    isThisNum = true;
   })
   
   // Adding event listeners for digit buttons
