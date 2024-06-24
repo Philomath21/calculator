@@ -14,6 +14,8 @@ function divide (num1, num2)  {
   return num1/ num2;
 }
 
+let display = document.getElementById('display');
+
 
 function operate (num1, operator, num2){
   switch (operator){
@@ -36,64 +38,60 @@ function operate (num1, operator, num2){
 }
 
 
-let display = document.getElementById('display');
-
-
 let inputArray = [];
 
 function updateInputArray (){
   let num = 0;
+  let isThisNum; // to check whether latest clicked is digit or operator
   
   function onClickingDigit (digit) {
     num = num*10 + digit;
     display.textContent = `${num}`;
+    isThisNum = true;
   }
   
   function onClickingOperator (operator) {
     switch (inputArray.length){
       case 0:
-        inputArray.push(num); // moves to case 1
+        inputArray.push(num);
+        // moves to case 1
+        inputArray.push(operator)
+        num = 0;
+        break;
       case 1:
         inputArray.push(operator)
         num = 0;
         break;
       case 2:
-        inputArray[1]= operator;
-        break;
-      case 3:
-        num = operate(...inputArray);
-        num = Math.round(num*100000000)/100000000;
-        inputArray = [];
-        inputArray.push(num); // moves to case 1
+        if (isThisNum) {
+          inputArray.push(num);
+          num = operate(...inputArray);
+          if (isNaN(num)){
+            display.textContent = `Zero division error. E cholbe na!`
+          } else {
+            num = Math.round(num*100000000)/100000000;
+            display.textContent = `${num}`
+          }
+          inputArray = [];
+          inputArray.push(num);
+          // moves to case 1
+          inputArray.push(operator)
+          num = 0;
+          break;
+        } else if (operator == `=`){
+          inputArray.pop();
+          break;
+        } else {
+          inputArray[1]= operator;
+          break;
+        }
       default:
         console.log('You have messed up');
     }
+    isThisNum = false
     console.log("operator");
   }
 
-
-  let evaluate= document.querySelector('#evaluate');
-  evaluate.addEventListener('click', () => {
-    switch (inputArray.length){
-      case 0:
-        inputArray.push(num)
-        break;
-      case 1:
-        break;
-      case 2:
-        inputArray.pop();
-        break;
-      case 3:
-        num = operate(...inputArray);
-        num = Math.round(num*100000000)/100000000;
-        // code to display number, then,
-        inputArray = [];
-        inputArray.push(num);
-      default:
-        console.log('You have messed up');
-    }
-    display.textContent = num;
-  })
 
   let clear = document.querySelector('#clear');
   clear.addEventListener('click', ()=> {
@@ -145,6 +143,9 @@ function updateInputArray (){
 
   let division= document.querySelector('#division');
   division.addEventListener('click', () => {onClickingOperator('/')})
+
+  let evaluate= document.querySelector('#evaluate');
+  evaluate.addEventListener('click', () => {onClickingOperator('=')})
 }
 
 
