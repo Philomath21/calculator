@@ -26,10 +26,6 @@ function operate (num1, operator, num2){
     case '*' :
       return multiply(num1, num2);
     case '/' :
-      if (num2 == 0){
-        console.log ('Zero division error')
-        break;
-      }
       return divide(num1, num2);
     default :
       console.log('you have messed up');
@@ -58,10 +54,6 @@ function updateInputArray (){
         inputArray.push(operator)
         num = 0;
         break;
-      case 1:
-        inputArray.push(operator)
-        num = 0;
-        break;
       case 2:
         if (isThisNum) {
           inputArray.push(num);
@@ -77,9 +69,6 @@ function updateInputArray (){
           // moves to case 1
           inputArray.push(operator)
           num = 0;
-          break;
-        } else if (operator == `=`){
-          inputArray.pop();
           break;
         } else {
           inputArray[1]= operator;
