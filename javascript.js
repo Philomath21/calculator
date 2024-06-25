@@ -20,11 +20,30 @@ function operate (num1, operator, num2){
   }
 }
 
+function onClickingClear() {
+  inputArray = [];
+  num = 0;
+  decimalPlaceCounter = 0;
+  display.textContent = num;
+}
+
+function onClickingBack (){
+  if (lastClicked == "operator") {
+    num = inputArray[0];
+    inputArray = [];
+    lastClicked = "digit";
+  }
+  decimalPlaceCounter ? decimalPlaceCounter -- : null;
+  num = num.toString().slice(0,-1);
+  num = Number(num);
+  display.textContent = num;
+}
+
 // to update number and display it on clicking the digit buttons
 function onClickingDigit (digit) {
-  num = (lastClicked == "=")? 0 : num;
+  (lastClicked == "=") ? onClickingClear() : null;
   num = decimalPlaceCounter ? (num + digit/(10**decimalPlaceCounter++))
-    : (num*10 + digit);
+                            : (num*10 + digit);
   display.textContent = `${num}`;
   lastClicked = "digit";
 }
@@ -59,25 +78,6 @@ function onClickingDot () {
     display.textContent = `${num}.`;
     decimalPlaceCounter++;
   }
-}
-
-function onClickingClear() {
-  inputArray = [];
-  num = 0;
-  decimalPlaceCounter = 0;
-  display.textContent = num;
-}
-
-function onClickingBack (){
-  if (lastClicked == "operator") {
-    num = inputArray[0];
-    inputArray = [];
-    lastClicked = "digit";
-  }
-  decimalPlaceCounter ? decimalPlaceCounter -- : null;
-  num = num.toString().slice(0,-1);
-  num = Number(num);
-  display.textContent = num;
 }
 
 // Keyboard functionality
