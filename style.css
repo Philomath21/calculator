@@ -58,12 +58,12 @@ button {
     border-radius: 8px;
 }
 
-#r1 button,
-#r6 button,
-#zero {
-    flex: 1;
-}
+    #r1 button,
+    #r6 button,
+    #zero {
+        flex: 1;
+    }
 
-.operator {
-    background-color: rgb(185, 221, 253);
-}
+    .operator {
+        background-color: rgb(185, 221, 253);
+    }
