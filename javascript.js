@@ -1,8 +1,8 @@
-let display = document.getElementById('display'); // Calculator display
+let display = document.getElementById('display'); // Calculator display element
 let inputArray = []; // format: [num1, operator, num2]. array to store the two numbers & operator (expression to calculate) entered by the user 
 let num = 0; // to store the user entered number
 let decimalPlaceCounter = 0; // to know if '.' button has been clicked, and to store the decimal place count
-let isThisNum; // to know whether last clicked button is a digit or an operator
+let lastClicked = "digit"; // ("digit", "operator" or "=") to know whether last clicked button is digit, operator, or "="
 
 // operates on two numbers as per the operator passed
 function operate (num1, operator, num2){
@@ -22,34 +22,36 @@ function operate (num1, operator, num2){
 
 // to update number and display it on clicking the digit buttons
 function onClickingDigit (digit) {
-  if (decimalPlaceCounter){
-    num = num + digit/(10**decimalPlaceCounter);
-    decimalPlaceCounter++;
-  } else {
-    num = num*10 + digit
-  }
+  num = (lastClicked == "=")? 0 : num;
+  num = decimalPlaceCounter ? (num + digit/(10**decimalPlaceCounter++))
+    : (num*10 + digit);
   display.textContent = `${num}`;
-  isThisNum = true;
+  lastClicked = "digit";
+}
+
+function onClickingEvaluate () {
+  if (lastClicked == "digit" && inputArray.length == 2){
+    inputArray.push(num);
+    num = operate(...inputArray);
+    num = Math.round(num*100000000)/100000000;
+    display.textContent = (isNaN(num)|| !isFinite(num)) ? `Zero division error` : `${num}`;
+    inputArray = [];
+    lastClicked = "=";
+  } 
 }
 
 // to update expression on clicking the operator buttons
 function onClickingOperator (operator) {
-  if (!isThisNum){ //if last clicked button was also an operator, change it in input array with new operator
+  if (lastClicked == "operator"){ //if last clicked button was also an operator, change it in input array with new operator
     inputArray[1]= operator;
-  } else {
+  } else if (lastClicked == "digit"){
+    onClickingEvaluate(); // Evaluates earlier expression if present, and result is stored in num
     inputArray.push(num);
-    if (inputArray.length == 3){ //calculate the previous expression first
-      num = operate(...inputArray);
-      num = Math.round(num*100000000)/100000000;
-      display.textContent = (isNaN(num)|| !isFinite(num)) ? `Zero division error` : `${num}`;
-      inputArray = [];
-      inputArray.push(num);
-    }
-    inputArray.push(operator)
+    inputArray.push(operator);
     num = 0;
     decimalPlaceCounter = 0;
   }
-  isThisNum = false;
+  lastClicked = "operator";
 };
 
 function onClickingDot () {
@@ -67,10 +69,10 @@ function onClickingClear() {
 }
 
 function onClickingBack (){
-  if (!isThisNum) {
+  if (lastClicked == "operator") {
     num = inputArray[0];
     inputArray = [];
-    isThisNum = true;
+    lastClicked = "digit";
   }
   decimalPlaceCounter ? decimalPlaceCounter -- : null;
   num = num.toString().slice(0,-1);
@@ -97,8 +99,8 @@ document.addEventListener('keyup', (event) => {
   else if (event.key == '*') {onClickingOperator('*')}
   else if (event.key == '-') {onClickingOperator('-')}
   else if (event.key == '+') {onClickingOperator('+')}
-  else if (event.key == '=') {onClickingOperator('=')}
-  else if (event.key == 'Enter') {onClickingOperator('=')}
+  else if (event.key == '=') {onClickingEvaluate()}
+  else if (event.key == 'Enter') {onClickingEvaluate()}
 })
 
 // On screen buttons functionality
@@ -154,5 +156,5 @@ let addition= document.querySelector('#addition');
 addition.addEventListener('click', () => {onClickingOperator('+')})
 
 let evaluate= document.querySelector('#evaluate');
-evaluate.addEventListener('click', () => {onClickingOperator('=')})
+evaluate.addEventListener('click', onClickingEvaluate)
 
