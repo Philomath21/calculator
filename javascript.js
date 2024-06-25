@@ -75,14 +75,15 @@ function updateInputArray (){
 
   let back = document.querySelector('#back');
   back.addEventListener('click', () => {
-    if (decimalPlaceCounter){
-      decimalPlaceCounter--;
-      num = num - digit/(10**decimalPlaceCounter);
-    } else {
-      num = num*10 + digit
+    if (!isThisNum) {
+      num = inputArray[0];
+      inputArray = [];
+      isThisNum = true;
     }
-    display.textContent = `${num}`;
-    isThisNum = true;
+    decimalPlaceCounter ? decimalPlaceCounter -- : null;
+    num = num.toString().slice(0,-1);
+    num = Number(num);
+    display.textContent = num;
   })
   
   // Adding event listeners for digit buttons
