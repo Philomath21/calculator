@@ -1,3 +1,9 @@
+let display = document.getElementById('display'); // Calculator display
+let inputArray = []; // format: [num1, operator, num2]. array to store the two numbers & operator (expression to calculate) entered by the user 
+let num = 0; // to store the user entered number
+let decimalPlaceCounter = 0; // to know if '.' button has been clicked, and to store the decimal place count
+let isThisNum; // to know whether last clicked button is a digit or an operator
+
 // operates on two numbers as per the operator passed
 function operate (num1, operator, num2){
   switch (operator){
@@ -13,14 +19,6 @@ function operate (num1, operator, num2){
       break ;
   }
 }
-
-
-let display = document.getElementById('display'); // Calculator display
-let inputArray = []; // format: [num1, operator, num2]. array to store the two numbers & operator (expression to calculate) entered by the user 
-let num = 0; // to store the user entered number
-let decimalPlaceCounter = 0; // to know if '.' button has been clicked, and to store the decimal place count
-let isThisNum; // to know whether last clicked button is a digit or an operator
-
 
 // to update number and display it on clicking the digit buttons
 function onClickingDigit (digit) {
